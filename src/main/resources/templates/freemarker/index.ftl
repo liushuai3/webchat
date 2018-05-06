@@ -7,6 +7,5 @@
 <body>
 <h1>${redisConfig.host}</h1>
 <h1>${redisConfig.port}</h1>
-<h1>${redisConfig.password}</h1>
 </body>
 </html>
