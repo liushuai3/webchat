@@ -14,7 +14,7 @@ public class WeChatContoller {
 		if(CheckUtil.checkSignature(signature,timestamp,nonce)){
 			return echostr;
 		}else {
-			return timestamp;
+			return "hello";
 		}
 	}
 }
