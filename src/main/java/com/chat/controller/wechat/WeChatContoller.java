@@ -54,6 +54,6 @@ public class WeChatContoller {
 			returnMap.put(name, value);
 		}
 		log.error("message:"+returnMap.toString());
-		return returnMap.toString();
+		return "success";
 	}
 }
