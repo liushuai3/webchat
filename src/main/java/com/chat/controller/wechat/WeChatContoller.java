@@ -58,11 +58,10 @@ public class WeChatContoller {
 		}
 		log.error("message:"+returnMap.toString());
 		//message:{signature=5acfc62110690653be05c33be431d3140a2f3ab1, openid=oH58K0u5cGEpgADi7zK8jqyBsfX0, nonce=1607365876, timestamp=1531047691}
-		try {
-			String respMessage = null;
-			//默认返回的文本消息内容
-			String respContent = "请求处理异常，请稍后尝试！";
-
+        String respMessage = null;
+        //默认返回的文本消息内容
+        String respContent = "请求处理异常，请稍后尝试！";
+        try {
 			//xml请求解析
 			Map<String,String> requestMap = MessageUtil.pareXml(request);
 			log.error("requestMap:"+requestMap.toString());
@@ -92,10 +91,6 @@ public class WeChatContoller {
 		}catch(Exception e){
 			log.error("erro:"+e.getMessage());
 		}
-
-
-
-
-		return "success";
+		return respMessage;
 	}
 }
