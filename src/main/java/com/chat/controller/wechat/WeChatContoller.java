@@ -1,6 +1,8 @@
 package com.chat.controller.wechat;
 
+import com.chat.pojo.message.TextMessage;
 import com.chat.utils.CheckUtil;
+import com.chat.utils.MessageUtil;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.ui.ModelMap;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -54,6 +57,45 @@ public class WeChatContoller {
 			returnMap.put(name, value);
 		}
 		log.error("message:"+returnMap.toString());
+		//message:{signature=5acfc62110690653be05c33be431d3140a2f3ab1, openid=oH58K0u5cGEpgADi7zK8jqyBsfX0, nonce=1607365876, timestamp=1531047691}
+		try {
+			String respMessage = null;
+			//默认返回的文本消息内容
+			String respContent = "请求处理异常，请稍后尝试！";
+
+			//xml请求解析
+			Map<String,String> requestMap = MessageUtil.pareXml(request);
+			log.error("requestMap:"+requestMap.toString());
+			//发送方账号（open_id）
+			String fromUserName = requestMap.get("FromUserName");
+			//公众账号
+			String toUserName = requestMap.get("ToUserName");
+			//消息类型
+			String msgType = requestMap.get("MsgType");
+
+			//文本消息
+			if(msgType.equals(MessageUtil.MESSSAGE_TYPE_TEXT)){
+				//respContent = "Hi,您发送的是文本消息！";
+				//回复文本消息
+				TextMessage textMessage = new TextMessage();
+				//这里需要注意，否则无法回复消息给用户了
+				textMessage.setToUserName(fromUserName);
+				textMessage.setFromUserName(toUserName);
+				textMessage.setCreateTime(new Date().getTime());
+				textMessage.setMsgType(MessageUtil.MESSSAGE_TYPE_TEXT);
+				//textMessage.setFuncFlag(0);
+				respContent = "Hi，你发的消息是："+requestMap.get("Content");
+				textMessage.setContent(respContent);
+				respMessage = MessageUtil.textMessageToXml(textMessage);
+			}
+
+		}catch(Exception e){
+			log.error("erro:"+e.getMessage());
+		}
+
+
+
+
 		return "success";
 	}
 }

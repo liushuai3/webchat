@@ -72,6 +72,18 @@
 			<version>1.3.8.RELEASE</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/dom4j/dom4j -->
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.thoughtworks.xstream/xstream -->
+		<dependency>
+			<groupId>com.thoughtworks.xstream</groupId>
+			<artifactId>xstream</artifactId>
+			<version>1.4.10-java7</version>
+		</dependency>
+
 
 		<!-- 热部署 -->
 		<!-- devtools可以实现页面热部署（即页面修改后会立即生效，
