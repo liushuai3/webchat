@@ -82,7 +82,7 @@ public class WeChatContoller {
 				textMessage.setFromUserName(toUserName);
 				textMessage.setCreateTime(new Date().getTime());
 				textMessage.setMsgType(MessageUtil.MESSSAGE_TYPE_TEXT);
-				//textMessage.setFuncFlag(0);
+				textMessage.setFuncFlag(0);
 				respContent = "Hi，你发的消息是："+requestMap.get("Content");
 				textMessage.setContent(respContent);
 				respMessage = MessageUtil.textMessageToXml(textMessage);
@@ -91,6 +91,7 @@ public class WeChatContoller {
 		}catch(Exception e){
 			log.error("erro:"+e.getMessage());
 		}
+		log.error("respMessage:"+respMessage);
 		return respMessage;
 	}
 }

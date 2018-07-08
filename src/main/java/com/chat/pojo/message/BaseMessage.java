@@ -12,6 +12,9 @@ public class BaseMessage {
     //消息id 64位整型
     private String MsgId;
 
+    private int FuncFlag;
+
+
     public BaseMessage() {
         super();
         // TODO Auto-generated constructor stub
@@ -62,5 +65,13 @@ public class BaseMessage {
 
     public void setMsgId(String msgId) {
         MsgId = msgId;
+    }
+
+    public int getFuncFlag() {
+        return FuncFlag;
+    }
+
+    public void setFuncFlag(int funcFlag) {
+        FuncFlag = funcFlag;
     }
 }
