@@ -29,10 +29,15 @@ public class WeChatContoller {
 	@RequestMapping(value = "/index",method = RequestMethod.POST)
 	public String getWeChat(HttpServletRequest request){
         String respMessage = "";
-        try {
+		Map<String,String> requestMap = null;
+        try{
 			//xml请求解析
-			Map<String,String> requestMap = MessageUtil.pareXml(request);
+			requestMap = MessageUtil.pareXml(request);
 			log.error("requestMap:"+requestMap.toString());
+		}catch (Exception e){
+			log.error("发送文本消息异常:"+e.getMessage(),e);
+		}
+		if(requestMap != null){
 			//发送方账号（open_id）
 			String fromUserName = requestMap.get("FromUserName");
 			//公众账号
@@ -40,26 +45,42 @@ public class WeChatContoller {
 			//消息类型
 			String msgType = requestMap.get("MsgType");
 			//消息
-            String msgId = requestMap.get("MsgId");
-            //消息内容
+			String msgId = requestMap.get("MsgId");
+			//消息内容
 			String content = requestMap.get("Content");
-
-			//文本消息
-			if(msgType.equals(MessageUtil.MESSSAGE_TYPE_TEXT)){
-				//回复文本消息
-				TextMessage textMessage = new TextMessage();
-				textMessage.setToUserName(fromUserName);
-				textMessage.setFromUserName(toUserName);
-				textMessage.setCreateTime(new Date().getTime());
-				textMessage.setMsgType(MessageUtil.MESSSAGE_TYPE_TEXT);
-                textMessage.setMsgId(msgId);
-				textMessage.setFuncFlag(0);
-				String respContent = "Hi，你发的消息是：" + content;
-				textMessage.setContent(respContent);
-				respMessage = MessageUtil.textMessageToXml(textMessage);
+			try {
+				//文本消息
+				if(msgType.equals(MessageUtil.MESSSAGE_TYPE_TEXT)){
+					//回复文本消息
+					TextMessage textMessage = new TextMessage();
+					textMessage.setToUserName(fromUserName);
+					textMessage.setFromUserName(toUserName);
+					textMessage.setCreateTime(new Date().getTime());
+					textMessage.setMsgType(MessageUtil.MESSSAGE_TYPE_TEXT);
+					textMessage.setMsgId(msgId);
+					textMessage.setFuncFlag(0);
+					String respContent = "Hi，你发的消息是：" + content;
+					textMessage.setContent(respContent);
+					respMessage = MessageUtil.textMessageToXml(textMessage);
+				}else if(msgType.equals(MessageUtil.MESSSAGE_TYPE_EVENT)){
+					String event = requestMap.get("Event");
+					String eventKey = requestMap.get("EventKey");
+					if(event.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)){
+						TextMessage textMessage = new TextMessage();
+						textMessage.setToUserName(fromUserName);
+						textMessage.setFromUserName(toUserName);
+						textMessage.setCreateTime(new Date().getTime());
+						textMessage.setMsgType(MessageUtil.MESSSAGE_TYPE_TEXT);
+						textMessage.setMsgId(msgId);
+						textMessage.setFuncFlag(0);
+						String respContent = "欢迎关注！";
+						textMessage.setContent(respContent);
+						respMessage = MessageUtil.textMessageToXml(textMessage);
+					}
+				}
+			}catch(Exception e){
+				log.error("发送文本消息异常:"+e.getMessage(),e);
 			}
-		}catch(Exception e){
-			log.error("发送文本消息异常:"+e.getMessage(),e);
 		}
 		log.error("respMessage:"+respMessage);
 		return respMessage;
