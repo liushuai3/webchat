@@ -78,6 +78,7 @@ public class WeChatContoller {
 						respMessage = MessageUtil.textMessageToXml(textMessage);
 					}
 				}
+
 			}catch(Exception e){
 				log.error("发送文本消息异常:"+e.getMessage(),e);
 			}
